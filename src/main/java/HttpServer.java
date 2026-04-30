@@ -11,7 +11,7 @@ public class HttpServer {
                 
                 Socket clientSocket = serverSocket.accept();
 
-                // Creating new thread for each client for the ability to have multiple clients
+                // Enabling multiple clients with multithreading
                 new Thread(new ClientHandler(clientSocket)).start();
 
             } catch (IOException e) {
