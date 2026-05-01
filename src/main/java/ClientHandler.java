@@ -1,36 +1,16 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
 
     private Socket clientSocket;
+    private ClientResponder clientResponder;
 
-    private static void sendHtml(String html, Socket clientSocket) throws IOException {
-        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-        writer.println("HTTP/1.1 200 OK");
-        writer.println("Content-Type: text/html");
-        writer.println("Content-Length: " + html.length());
-        writer.println("");
-        writer.println(html);
-    }
-
-    private static void sendMessage(String message, Socket clientSocket) throws IOException {
-
-        // While you can write raw bytes directly to the OutputStream,
-        // it is easier to wrap it in a higher-level writer
-        PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-        writer.println("HTTP/1.1 200 OK");
-        writer.println("Content-Type: text/plain");
-        writer.println("Content-Length: " + message.length());
-        writer.println("");
-        writer.println(message);
-    }
-
-    public ClientHandler(Socket socket) {
-        this.clientSocket = socket;
+    public ClientHandler(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+        this.clientResponder = new ClientResponder(clientSocket);
     }
 
     @Override
@@ -44,7 +24,8 @@ public class ClientHandler implements Runnable {
                 System.out.println(line);
             }
 
-            sendMessage("Hello World", clientSocket);
+            clientResponder.respond("Hello World", "text/plain");
+
         } catch (IOException e) {
             System.err.println("Server error: " + e.getMessage());
         }
