@@ -2,11 +2,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientResponder {
+public class ResponseSender {
 
     private Socket clientSocket;
 
-    public ClientResponder(Socket clientSocket) {
+    public ResponseSender(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
