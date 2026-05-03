@@ -1,0 +1,43 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-btn {
+	padding: 4px;
+	margin: 10px;
+}
+
+#main-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#profile-container {
+	margin: 30px;
+	display: flex;
+	flex-direction: row;
+}
+
+#profile-container > p {
+	width: 300px;
+	margin-left: 30px;
+}
+
+#goku-container {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+}
+
+#goku-container > img {
+	margin-top: 40px;
+	width: 200px;
+}
+
+.h-div {
+	display: flex;
+}
