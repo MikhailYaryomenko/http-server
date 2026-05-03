@@ -1,9 +1,17 @@
 package request;
 
-import java.io.IOException;
+import request.method.GetHandler;
+import request.method.HttpMethodHandler;
+import request.method.PostHandler;
+
 import java.io.PrintWriter;
+import java.util.Map;
 
 public class RequestHandler {
+    private final Map<String, HttpMethodHandler> handlers = Map.of(
+            "GET", new GetHandler(),
+            "POST", new PostHandler()
+    );
     private HttpRequestInfo httpRequestInfo;
     private PrintWriter writer;
 
@@ -14,26 +22,11 @@ public class RequestHandler {
 
     public void handleRequest() {
         System.out.println(httpRequestInfo);
-        try {
-            if (httpRequestInfo.method().equals("GET")) {
-                if (httpRequestInfo.path().equals("/")) {
-                    respond("Hello World", "text/plain");
-                } else {
-                    respond("404: Page not found", "text/plain");
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        HttpMethodHandler handler = handlers.get(httpRequestInfo.method());
+        if (handler == null) {
+            System.err.println(httpRequestInfo.method() + " method isn't supported");
+            return;
         }
-    }
-
-    public void respond(String message, String contentType) throws IOException {
-        // While you can write raw bytes directly to the OutputStream,
-        // it is easier to wrap it in a higher-level writer
-        writer.println("HTTP/1.1 200 OK");
-        writer.println("Content-Type: " + contentType);
-        writer.println("Content-Length: " + message.length());
-        writer.println("");
-        writer.println(message);
+        handler.handle(httpRequestInfo.path(), writer);
     }
 }
