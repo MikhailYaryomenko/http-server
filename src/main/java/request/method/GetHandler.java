@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 public class GetHandler implements HttpMethodHandler {
 
-
     /*
      Examples of HTTP response encoding for serving static files
      HTTP/1.1 200
