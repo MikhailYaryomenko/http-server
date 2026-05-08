@@ -1,13 +1,14 @@
 package request;
 
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class HttpStatusGenerator {
 
     private final Map<String, String> httpCodes = Map.of(
             "404", "404 Not Found",
-            "405", "Method Not Allowed"
+            "405", "405 Method Not Allowed"
     );
     private PrintWriter writer;
 
@@ -21,11 +22,15 @@ public class HttpStatusGenerator {
             System.err.println("You provided unsupported status code");
             throw new RuntimeException();
         }
-        writer.println("HTTP/1.1 " + httpStatusMessage);
-        writer.println("Content-Type: plain/text");
-        writer.println("Allow: GET, HEAD");
-        writer.println("Content-Length: " + httpStatusMessage.length());
-        writer.println();
-        writer.println(httpStatusMessage);
+
+        writer.print("HTTP/1.1 " + httpStatusMessage + "\r\n");
+        writer.print("Content-Type: text/plain\r\n");
+        writer.print("Allow: GET, POST\r\n");
+        // HTTP actually expects amount of bytes. It's especially important,
+        // because in many languages single character can be 2 bytes
+        writer.print("Content-Length: " + httpStatusMessage.getBytes(StandardCharsets.UTF_8).length + "\r\n");
+        writer.print("\r\n");
+        writer.print(httpStatusMessage);
+        writer.flush();
     }
 }

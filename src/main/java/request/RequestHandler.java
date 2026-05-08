@@ -1,5 +1,6 @@
 package request;
 
+import request.method.GetHandler;
 import request.method.HttpMethodHandler;
 import request.method.PostHandler;
 
@@ -8,7 +9,8 @@ import java.util.Map;
 
 public class RequestHandler {
     private final Map<String, HttpMethodHandler> handlers = Map.of(
-            "POST", new PostHandler()
+            "POST", new PostHandler(),
+            "GET", new GetHandler()
     );
     private HttpRequestInfo httpRequestInfo;
     private PrintWriter writer;
