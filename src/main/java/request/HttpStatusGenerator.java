@@ -29,8 +29,9 @@ public class HttpStatusGenerator {
         if (Objects.equals(statusCode, "405")) {
             writer.print("Allow: GET, POST\r\n");
         }
-        // HTTP actually expects amount of bytes. It's especially important,
-        // because in many languages single character can be 2 bytes
+        // HTTP Content-Length header expects the size of the message body
+        // expressed in bytes. Be aware that some characters have size of 2 bytes
+        // that results in errors with length of the String based on characters
         writer.print("Content-Length: " + httpStatusMessage.getBytes(StandardCharsets.UTF_8).length + "\r\n");
         writer.print("\r\n");
         writer.print(httpStatusMessage);
